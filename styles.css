@@ -1,0 +1,132 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+body{
+    padding:20px;
+    display:flex;
+    height:100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: beige;
+}
+
+.calculator{
+    padding:20px;
+    width: 500px;
+    height:700px;
+    background-color: rgb(85, 80, 80);
+    box-shadow: 0 0 30px inset;
+    display:flex;
+    flex-direction: column;
+    border-radius: 30px;
+}
+
+.screen{
+    flex: 1;
+    box-shadow: 0 0 20px inset;
+    background-color: rgb(105, 145, 108);
+    border-radius: 15px;
+    border: 1px solid black;
+    overflow: hidden;
+    display:flex;
+    align-items: center;
+}
+
+.screen p{
+    font-size: 10vw;
+    margin:0 auto;
+    text-align: center;
+    width:100%;
+}
+
+.clear{
+    font-size: 25px;
+}
+
+.calculation-section{
+    background-color: rgb(59, 58, 58);
+    display: flex;
+    flex-direction: row;
+    flex:1;
+    flex-wrap:wrap;
+    margin-top:5px;
+    padding:10px;
+    border-radius:15px;
+}
+
+.left-side{
+    display:flex;
+    flex-direction: row-;
+    flex-wrap: wrap;
+    flex:3;
+    gap:30px;
+    width: fit-content;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+button{
+    background-color: rgb(32, 32, 32);
+    box-shadow: 0 0 20px rgb(39, 39, 39);
+    border-radius:15px;
+    transition: 0.2s scale;
+    width:1.5em;
+    height:1.5em;
+    font-size: 50px;
+    color:white;
+}
+
+button:hover{
+    cursor:pointer;
+    scale:1.1;
+}
+
+button:active, .right-side button:active{
+    background-color: rgb(46, 44, 44);
+}
+
+.right-side{
+    flex:1;
+    display:flex;
+    flex-direction: column;
+    gap: 20px;
+    width:fit-content;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.right-side button{
+    background-color: beige;
+    color:black;
+    transition: 0.1s background-color;
+}
+
+@media(max-width: 500px){
+    button{
+        font-size:50px;
+    }
+
+    .left-side{
+        gap:3px;
+    }
+
+    .right-side{
+        justify-content: center;
+        gap:5px;
+    }
+
+    .calculation-section{
+        flex:2;
+    }
+}
+    
+    @media (max-width: 348px){
+        button{
+            font-size:40px;
+        }
+    }
