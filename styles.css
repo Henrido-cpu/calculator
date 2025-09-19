@@ -103,7 +103,12 @@ button:active, .right-side button:active{
 .right-side button{
     background-color: beige;
     color:black;
-    transition: 0.1s background-color;
+    transition: 0.1s background-color, 0.1s border;
+}
+
+button.selected{
+    border: 2px solid white;
+    background-color:rgb(94, 94, 79);
 }
 
 @media(max-width: 500px){
