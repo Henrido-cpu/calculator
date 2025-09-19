@@ -21,6 +21,7 @@ function clearAll(){
     operator = "";
     equalBtnPressed = false;
     screenOutput.textContent = "";
+    clearOperatorActiveStates();
 }
  
 
@@ -67,6 +68,9 @@ equalBtn.addEventListener("click", ()=>{
     }
 });
 
+function clearOperatorActiveStates(){
+    operatorBtns.forEach(btn=>btn.classList.remove("selected"));
+}
 
 const operatorBtns = document.querySelectorAll(".right-side button");
 operatorBtns.forEach(operatorBtn => operatorBtn.addEventListener("click", (e)=>{
@@ -79,9 +83,12 @@ operatorBtns.forEach(operatorBtn => operatorBtn.addEventListener("click", (e)=>{
         equalBtnPressed = false;
     }
     
+    clearOperatorActiveStates()
+
     if(num1){
         operator = "";
         operator = e.target.textContent;
+        e.target.classList.add("selected");
     }
 
 
@@ -92,6 +99,8 @@ const arr = [];
 const numberBtns = document.querySelectorAll(".left-side button");
 numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
 
+    clearOperatorActiveStates();
+    
     if(e.target.textContent !== "=" && e.target.textContent !== "."){
         const value = e.target.textContent;
         console.log(value);
