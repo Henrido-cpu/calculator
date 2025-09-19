@@ -91,9 +91,11 @@ const arr = [];
 
 const numberBtns = document.querySelectorAll(".left-side button");
 numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
+
     if(e.target.textContent !== "=" && e.target.textContent !== "."){
         const value = e.target.textContent;
         console.log(value);
+
         if(!num1 || !operator){
             num1 += value;
             screenOutput.textContent = num1;
@@ -103,7 +105,9 @@ numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
             screenOutput.textContent = num2; 
             console.log("num2 pressed");
         }
+        
     }
+
 }))
 
 const clearBtn = document.querySelector(".clear-btn");
