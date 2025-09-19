@@ -101,20 +101,28 @@ numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
 
     clearOperatorActiveStates();
     
-    if(e.target.textContent !== "=" && e.target.textContent !== "."){
+    if(e.target.textContent !== "="){
         const value = e.target.textContent;
         console.log(value);
-
-        if(!num1 || !operator){
-            num1 += value;
-            screenOutput.textContent = num1;
-            console.log(num1);
-        }else if(num1 && !equalBtnPressed){
-            num2 += value;
-            screenOutput.textContent = num2; 
-            console.log("num2 pressed");
+        if(value === "." && !screenOutput.textContent.includes(".")){
+            if(num2){
+                num2 += value;
+                screenOutput.textContent = num2;
+            }else if(num1){
+                num1 += value;
+                screenOutput.textContent = num1;
+            }
+        }else if(value !== "=" && value !== "."){
+            if(!num1 || !operator){
+                num1 += value;
+                screenOutput.textContent = num1;
+                console.log(num1);
+            }else if(num1 && !equalBtnPressed){
+                num2 += value;
+                screenOutput.textContent = num2; 
+                console.log("num2 pressed");
+            }
         }
-        
     }
 
 }))
