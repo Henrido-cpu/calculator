@@ -138,14 +138,21 @@ button:active, .right-side button:active{
 }
 
 .attribution{
-    width:100%;
-    height:50px;
     position: absolute;
-    bottom:5px;
+    bottom:0px;
+    padding:20px;
+    text-align: center;
+    left:0;
+    width:100%;
     background-color: rgb(165, 165, 127);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+}
+
+a{
+    font-family: 'Courier New', Courier, monospace;
+    text-decoration: none;
+    color:rgb(72, 104, 75);
+    font-size:25px;
+    font-weight: 900;
 }
 
 .left-side button{
@@ -156,6 +163,7 @@ button.selected{
     border: 2px solid white;
     background-color:rgb(94, 94, 79);
 }
+
 
 @media(max-width: 500px){
     button{
