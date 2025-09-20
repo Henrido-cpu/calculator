@@ -13,6 +13,10 @@ body{
     background-color: beige;
 }
 
+img{
+    width:30px;
+}
+
 .calculator{
     padding:20px;
     width: 500px;
@@ -46,17 +50,34 @@ body{
     font-size: 25px;
 }
 
+.right-left-container{
+    display:flex;
+}
+
+.back-space{
+    width:50%;
+    height:50px;
+    margin-bottom:20px;
+    background-color: rgb(129, 129, 97);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px inset black;
+    border: 2px solid black;
+}
+
 .calculation-section{
     background-color: rgb(59, 58, 58);
     box-shadow: 0 0 20px inset;
     border:2px solid black;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex:1;
     flex-wrap:wrap;
     margin-top:5px;
     padding:20px;
     border-radius:15px;
+    align-items: flex-end;
 }
 
 .left-side{
@@ -111,8 +132,9 @@ button:active, .right-side button:active{
 .right-side button{
     background-color: beige;
     color:black;
-    transition: 0.1s background-color, 0.1s border;
+    transition: 0.1s background-color, 0.1s border, 0.1s scale;
     box-shadow: inset 0 0 10px;
+    font-size: 45px;
 }
 
 .left-side button{

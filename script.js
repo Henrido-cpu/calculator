@@ -130,3 +130,8 @@ numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
 const clearBtn = document.querySelector(".clear-btn");
 clearBtn.addEventListener("click", clearAll);
 
+const backSpace = document.querySelector(".back-space");
+backSpace.addEventListener("click", ()=>{
+    num1 = num1.slice(0, -1);
+    screenOutput.textContent = num1;
+});
