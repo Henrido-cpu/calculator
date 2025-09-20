@@ -61,6 +61,7 @@ equalBtn.addEventListener("click", ()=>{
         screenOutput.textContent = "";
         num1 = operate(num1, operator, num2);
         screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
+        num1 = String(num1);
         num2 = "";
         operator = "";
         equalBtnPressed = false;
@@ -135,3 +136,92 @@ backSpace.addEventListener("click", ()=>{
     num1 = num1.slice(0, -1);
     screenOutput.textContent = num1;
 });
+
+/*Keyboard support*/
+
+function translateKeyToNum(e){
+    numberBtns.forEach(btn => {
+        console.log(e.key);
+        if(btn.textContent === e.key && e.key !== "."){
+            clearOperatorActiveStates();
+            btn.classList.add("selected");
+            setTimeout(()=>{
+                btn.classList.remove("selected");
+            }, 100)
+            if(!num2 && !operator){
+                num1 += btn.textContent;
+                screenOutput.textContent = num1;
+            }
+            else if(num1 && operator){
+                num2 += btn.textContent;
+                screenOutput.textContent = num2;
+            }
+        }else if(e.key === "." && !screenOutput.textContent.includes(".")){
+            if(!num2 && !operator){
+                num1 += ".";
+                screenOutput.textContent = num1;
+            }else if(num1 && operator){
+                num2 += ".";
+                screenOutput.textContent = num2;
+            }
+        }
+    })
+}
+
+function translateKeyToOperator(e){
+    operatorBtns.forEach(btn => {
+        console.log(e.key)
+
+        if(e.key === btn.textContent){
+
+            if(num1 && num2 && operator){
+                num1 = operate(num1, operator, num2);
+                screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
+                num2 = "";
+                operator = "";
+                equalBtnPressed = false;
+            }
+
+            clearOperatorActiveStates();
+
+            if(num1){
+                operator = "";
+                operator = btn.textContent;
+                btn.classList.add("selected");
+            }
+        }else if(e.key === "Enter" && num1 && num2 && operator){
+            equalBtn.classList.add("selected");
+            setTimeout(()=>{
+                equalBtn.classList.remove("selected");
+            }, 100)
+            equalBtnPressed = true;
+            screenOutput.textContent = "";
+            num1 = operate(num1, operator, num2);
+            screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
+            num1 = String(num1)
+            num2 = "";
+            operator = "";
+            equalBtnPressed = false;
+        }
+    })
+}
+
+function handleBackSpaceEvent(e){
+    if(e.key === "Backspace"){
+        backSpace.classList.add("selected");
+        setTimeout(()=>{
+            backSpace.classList.remove("selected");
+        }, 100)
+        num1 = num1.slice(0, -1);
+        screenOutput.textContent = num1;
+    }
+}
+
+document.addEventListener("keydown", (e)=>{
+    translateKeyToNum(e);
+    translateKeyToOperator(e);
+    handleBackSpaceEvent(e);
+})
+
+
+
