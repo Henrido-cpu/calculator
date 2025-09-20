@@ -61,11 +61,8 @@ equalBtn.addEventListener("click", ()=>{
         screenOutput.textContent = "";
         num1 = operate(num1, operator, num2);
         screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
-        num1 = String(num1);
         num2 = "";
         operator = "";
-        equalBtnPressed = false;
-        
     }
 });
 
@@ -75,13 +72,12 @@ function clearOperatorActiveStates(){
 
 const operatorBtns = document.querySelectorAll(".right-side button");
 operatorBtns.forEach(operatorBtn => operatorBtn.addEventListener("click", (e)=>{
-
+    equalBtnPressed = false;
     if(num1 && num2 && operator){
         num1 = operate(num1, operator, num2);
         screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
         num2 = "";
         operator = "";
-        equalBtnPressed = false;
     }
     
     clearOperatorActiveStates()
@@ -101,7 +97,7 @@ const numberBtns = document.querySelectorAll(".left-side button");
 numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
 
     clearOperatorActiveStates();
-    
+
     if(e.target.textContent !== "="){
         const value = e.target.textContent;
         console.log(value);
@@ -113,15 +109,22 @@ numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
                 num1 += value;
                 screenOutput.textContent = num1;
             }
-        }else if(value !== "=" && value !== "."){
-            if(!num1 || !operator){
-                num1 += value;
-                screenOutput.textContent = num1;
-                console.log(num1);
-            }else if(num1 && !equalBtnPressed){
+        }
+        else if(equalBtnPressed){
+            console.log("works");
+            clearAll();
+            num1 += value;
+            screenOutput.textContent = num1;
+        }
+        else if(value !== "=" && value !== "." && !equalBtnPressed){
+
+            if(num1 && operator){
                 num2 += value;
                 screenOutput.textContent = num2; 
-                console.log("num2 pressed");
+                console.log("num2 pressed"); 
+            }else if(!operator && !num2){
+                num1 += value;
+                screenOutput.textContent = num1;
             }
         }
     }
@@ -133,8 +136,10 @@ clearBtn.addEventListener("click", clearAll);
 
 const backSpace = document.querySelector(".back-space");
 backSpace.addEventListener("click", ()=>{
-    num1 = num1.slice(0, -1);
-    screenOutput.textContent = num1;
+    if(!equalBtnPressed){
+        num1 = num1.slice(0, -1);
+        screenOutput.textContent = num1;
+    }
 });
 
 /*Keyboard support*/
@@ -142,7 +147,7 @@ backSpace.addEventListener("click", ()=>{
 function translateKeyToNum(e){
     numberBtns.forEach(btn => {
         console.log(e.key);
-        if(btn.textContent === e.key && e.key !== "."){
+        if(btn.textContent === e.key && e.key !== "." && !equalBtnPressed){
             clearOperatorActiveStates();
             btn.classList.add("selected");
             setTimeout(()=>{
@@ -164,6 +169,11 @@ function translateKeyToNum(e){
                 num2 += ".";
                 screenOutput.textContent = num2;
             }
+        }else if(equalBtnPressed && e.key === btn.textContent){
+            console.log("works");
+            clearAll();
+            num1 += btn.textContent;
+            screenOutput.textContent = num1;
         }
     })
 }
@@ -173,7 +183,7 @@ function translateKeyToOperator(e){
         console.log(e.key)
 
         if(e.key === btn.textContent){
-
+            equalBtnPressed = false;
             if(num1 && num2 && operator){
                 num1 = operate(num1, operator, num2);
                 screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
@@ -198,22 +208,22 @@ function translateKeyToOperator(e){
             screenOutput.textContent = "";
             num1 = operate(num1, operator, num2);
             screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
-            num1 = String(num1)
             num2 = "";
             operator = "";
-            equalBtnPressed = false;
         }
     })
 }
 
 function handleBackSpaceEvent(e){
-    if(e.key === "Backspace"){
-        backSpace.classList.add("selected");
-        setTimeout(()=>{
-            backSpace.classList.remove("selected");
-        }, 100)
-        num1 = num1.slice(0, -1);
-        screenOutput.textContent = num1;
+    if(!equalBtnPressed){
+        if(e.key === "Backspace"){
+            backSpace.classList.add("selected");
+            setTimeout(()=>{
+                backSpace.classList.remove("selected");
+            }, 100)
+            num1 = num1.slice(0, -1);
+            screenOutput.textContent = num1;
+        }      
     }
 }
 
