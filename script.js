@@ -65,32 +65,74 @@ function displayResult(){
 }
 
 function handleOperatorBtnsAndKeys(e){
-
-    equalBtnPressed = false;
-    if(num1 && num2 && operator){
-        num1 = operate(num1, operator, num2);
-        screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
-        num2 = "";
-        operator = "";
-    }
     
-    clearOperatorActiveStates()
-
-    if(num1){
-        operator = "";
-        operator = e.target.textContent;
-        e.target.classList.add("selected");
+    if(e.type === "click"){
+        operatorBtns.forEach(btn => {
+            equalBtnPressed = false;
+            if(num1 && num2 && operator){
+                num1 = operate(num1, operator, num2);
+                screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
+                num2 = "";
+                operator = "";
+                equalBtnPressed = false;
+            }
+            
+            if(num1){
+                operator = "";
+                operator = btn.textContent;
+                btn.classList.add("selected");
+            }
+        })
     }
+
+    if(e.type === "keydown"){
+        operatorBtns.forEach(btn => {
+
+            console.log(e.key)
+
+            if(e.key === btn.textContent){
+                equalBtnPressed = false;
+                if(num1 && num2 && operator){
+                    num1 = operate(num1, operator, num2);
+                    screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
+                    num2 = "";
+                    operator = "";
+                    equalBtnPressed = false;
+                }
+
+                clearOperatorActiveStates();
+
+                if(num1){
+                    operator = "";
+                    operator = btn.textContent;
+                    btn.classList.add("selected");
+                }
+            }else if(e.key === "Enter" && num1 && num2 && operator){
+                equalBtn.classList.add("selected");
+                setTimeout(()=>{
+                    equalBtn.classList.remove("selected");
+                }, 100)
+                equalBtnPressed = true;
+                screenOutput.textContent = "";
+                num1 = operate(num1, operator, num2);
+                screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
+                num2 = "";
+                operator = "";
+            }
+    })
+    }
+
+    clearOperatorActiveStates()
 
 }
 
 function handleNumberBtnsAndKeys(e){
     
     clearOperatorActiveStates();
-    const value = "";
-    if(e.target.type === "click"){
+    let value = "";
+    if(e.type === "click"){
         value = e.target.textContent;
-    }else if(e.target.type === "keydown"){
+    }else if(e.type === "keydown"){
         
         numberBtns.forEach(btn => {
             if(btn.textContent === e.key){
@@ -104,7 +146,7 @@ function handleNumberBtnsAndKeys(e){
 
     }
 
-    if(e.target.textContent !== "="){
+    if(value !== "="){
         console.log(value);
         if(value === "." && !screenOutput.textContent.includes(".")){
             if(num2){
@@ -136,7 +178,7 @@ function handleNumberBtnsAndKeys(e){
 
 }
 
-function backSpace(){
+function handleBackSpace(){
     if(!equalBtnPressed){
         num1 = num1.slice(0, -1);
         screenOutput.textContent = num1;
@@ -167,79 +209,9 @@ const clearBtn = document.querySelector(".clear-btn");
 clearBtn.addEventListener("click", clearAll);
 
 const backSpace = document.querySelector(".back-space");
-backSpace.addEventListener("click", backSpace)
+backSpace.addEventListener("click", handleBackSpace)
 
 /*Keyboard support*/
-
-function translateKeyToNum(e){
-    numberBtns.forEach(btn => {
-        console.log(e.key);
-        if(btn.textContent === e.key && e.key !== "." && !equalBtnPressed){
-            clearOperatorActiveStates();
-            btn.classList.add("selected");
-            setTimeout(()=>{
-                btn.classList.remove("selected");
-            }, 100)
-            if(!num2 && !operator){
-                num1 += btn.textContent;
-                screenOutput.textContent = num1;
-            }
-            else if(num1 && operator){
-                num2 += btn.textContent;
-                screenOutput.textContent = num2;
-            }
-        }else if(e.key === "." && !screenOutput.textContent.includes(".")){
-            if(!num2 && !operator){
-                num1 += ".";
-                screenOutput.textContent = num1;
-            }else if(num1 && operator){
-                num2 += ".";
-                screenOutput.textContent = num2;
-            }
-        }else if(equalBtnPressed && e.key === btn.textContent){
-            console.log("works");
-            clearAll();
-            num1 += btn.textContent;
-            screenOutput.textContent = num1;
-        }
-    })
-}
-
-function translateKeyToOperator(e){
-    operatorBtns.forEach(btn => {
-        console.log(e.key)
-
-        if(e.key === btn.textContent){
-            equalBtnPressed = false;
-            if(num1 && num2 && operator){
-                num1 = operate(num1, operator, num2);
-                screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
-                num2 = "";
-                operator = "";
-                equalBtnPressed = false;
-            }
-
-            clearOperatorActiveStates();
-
-            if(num1){
-                operator = "";
-                operator = btn.textContent;
-                btn.classList.add("selected");
-            }
-        }else if(e.key === "Enter" && num1 && num2 && operator){
-            equalBtn.classList.add("selected");
-            setTimeout(()=>{
-                equalBtn.classList.remove("selected");
-            }, 100)
-            equalBtnPressed = true;
-            screenOutput.textContent = "";
-            num1 = operate(num1, operator, num2);
-            screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
-            num2 = "";
-            operator = "";
-        }
-    })
-}
 
 function handleBackSpaceEvent(e){
     if(!equalBtnPressed){
@@ -255,8 +227,8 @@ function handleBackSpaceEvent(e){
 }
 
 document.addEventListener("keydown", (e)=>{
-    translateKeyToNum(e);
-    translateKeyToOperator(e);
+    handleNumberBtnsAndKeys(e);
+    handleOperatorBtnsAndKeys(e);
     handleBackSpaceEvent(e);
 })
 
