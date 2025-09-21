@@ -67,22 +67,19 @@ function displayResult(){
 function handleOperatorBtnsAndKeys(e){
     
     if(e.type === "click"){
-        operatorBtns.forEach(btn => {
-            equalBtnPressed = false;
-            if(num1 && num2 && operator){
-                num1 = operate(num1, operator, num2);
-                screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
-                num2 = "";
-                operator = "";
-                equalBtnPressed = false;
-            }
-            
-            if(num1){
-                operator = "";
-                operator = btn.textContent;
-                btn.classList.add("selected");
-            }
-        })
+        equalBtnPressed = false;
+        if(num1 && num2 && operator){
+            num1 = operate(num1, operator, num2);
+            screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
+            num2 = "";
+            operator = "";
+        }
+        
+        if(num1){
+            operator = "";
+            operator = e.target.textContent;
+            e.target.classList.add("selected");
+        }
     }
 
     if(e.type === "keydown"){
@@ -91,7 +88,6 @@ function handleOperatorBtnsAndKeys(e){
             console.log(e.key)
 
             if(e.key === btn.textContent){
-                equalBtnPressed = false;
                 if(num1 && num2 && operator){
                     num1 = operate(num1, operator, num2);
                     screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
@@ -121,8 +117,6 @@ function handleOperatorBtnsAndKeys(e){
             }
     })
     }
-
-    clearOperatorActiveStates()
 
 }
 
