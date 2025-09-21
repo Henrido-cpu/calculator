@@ -51,11 +51,8 @@ function operate(num1, operator, num2){
     }
 }
 
-const screenOutput = document.querySelector(".screen p");
+function displayResult(){
 
-let equalBtnPressed = false;
-const equalBtn = document.querySelector(".equals");
-equalBtn.addEventListener("click", ()=>{
     if(operator && num1 && num2){
         equalBtnPressed = true;
         screenOutput.textContent = "";
@@ -64,14 +61,11 @@ equalBtn.addEventListener("click", ()=>{
         num2 = "";
         operator = "";
     }
-});
 
-function clearOperatorActiveStates(){
-    operatorBtns.forEach(btn=>btn.classList.remove("selected"));
 }
 
-const operatorBtns = document.querySelectorAll(".right-side button");
-operatorBtns.forEach(operatorBtn => operatorBtn.addEventListener("click", (e)=>{
+function handleOperatorBtnsAndKeys(e){
+
     equalBtnPressed = false;
     if(num1 && num2 && operator){
         num1 = operate(num1, operator, num2);
@@ -88,18 +82,29 @@ operatorBtns.forEach(operatorBtn => operatorBtn.addEventListener("click", (e)=>{
         e.target.classList.add("selected");
     }
 
+}
 
-}))
-
-const arr = [];
-
-const numberBtns = document.querySelectorAll(".left-side button");
-numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
-
+function handleNumberBtnsAndKeys(e){
+    
     clearOperatorActiveStates();
+    const value = "";
+    if(e.target.type === "click"){
+        value = e.target.textContent;
+    }else if(e.target.type === "keydown"){
+        
+        numberBtns.forEach(btn => {
+            if(btn.textContent === e.key){
+                btn.classList.add("selected");
+                setTimeout(()=>{
+                    btn.classList.remove("selected");
+                }, 100)
+                value = e.key;
+            }
+        })
+
+    }
 
     if(e.target.textContent !== "="){
-        const value = e.target.textContent;
         console.log(value);
         if(value === "." && !screenOutput.textContent.includes(".")){
             if(num2){
@@ -129,18 +134,40 @@ numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", (e)=>{
         }
     }
 
-}))
+}
+
+function backSpace(){
+    if(!equalBtnPressed){
+        num1 = num1.slice(0, -1);
+        screenOutput.textContent = num1;
+    }
+}
+
+const screenOutput = document.querySelector(".screen p");
+
+let equalBtnPressed = false;
+const equalBtn = document.querySelector(".equals");
+equalBtn.addEventListener("click", displayResult);
+
+
+function clearOperatorActiveStates(){
+    operatorBtns.forEach(btn=>btn.classList.remove("selected"));
+}
+
+const operatorBtns = document.querySelectorAll(".right-side button");
+operatorBtns.forEach(operatorBtn => operatorBtn.addEventListener("click", handleOperatorBtnsAndKeys));
+
+
+const arr = [];
+
+const numberBtns = document.querySelectorAll(".left-side button");
+numberBtns.forEach(numberBtn => numberBtn.addEventListener("click", handleNumberBtnsAndKeys))
 
 const clearBtn = document.querySelector(".clear-btn");
 clearBtn.addEventListener("click", clearAll);
 
 const backSpace = document.querySelector(".back-space");
-backSpace.addEventListener("click", ()=>{
-    if(!equalBtnPressed){
-        num1 = num1.slice(0, -1);
-        screenOutput.textContent = num1;
-    }
-});
+backSpace.addEventListener("click", backSpace)
 
 /*Keyboard support*/
 
