@@ -64,22 +64,25 @@ function displayResult(){
 
 }
 
+/*1 num1 + operator 2 num2 = 3 equalstate true and also num1, check if its true 
+*/
+
 function handleOperatorBtnsAndKeys(e){
     
     if(e.type === "click"){
-        equalBtnPressed = false;
-        if(num1 && num2 && operator){
-            num1 = operate(num1, operator, num2);
-            screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
-            num2 = "";
-            operator = "";
-        }
-        
-        if(num1){
-            operator = "";
-            operator = e.target.textContent;
-            e.target.classList.add("selected");
-        }
+            equalBtnPressed = false;
+            if(num1 && num2 && operator){
+                num1 = operate(num1, operator, num2);
+                screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
+                num2 = "";
+                operator = "";
+            }
+            
+            if(num1){
+                operator = "";
+                operator = e.target.textContent;
+                e.target.classList.add("selected");
+            }
     }
 
     if(e.type === "keydown"){
@@ -88,61 +91,66 @@ function handleOperatorBtnsAndKeys(e){
             console.log(e.key)
 
             if(e.key === btn.textContent){
+                equalBtnPressed = false;
                 if(num1 && num2 && operator){
                     num1 = operate(num1, operator, num2);
                     screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
                     num2 = "";
                     operator = "";
-                    equalBtnPressed = false;
+                    console.log("operated")
                 }
 
-                clearOperatorActiveStates();
-
-                if(num1){
+                if(num1 && !operator){
                     operator = "";
                     operator = btn.textContent;
                     btn.classList.add("selected");
+                    console.log("operator added");
                 }
-            }else if(e.key === "Enter" && num1 && num2 && operator){
+
+            }else if(e.key === "Enter"){
                 equalBtn.classList.add("selected");
                 setTimeout(()=>{
                     equalBtn.classList.remove("selected");
                 }, 100)
-                equalBtnPressed = true;
-                screenOutput.textContent = "";
-                num1 = operate(num1, operator, num2);
-                screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
-                num2 = "";
-                operator = "";
+                displayResult();
+                console.log("displayResult called")
             }
-    })
+        })
     }
 
 }
 
 function handleNumberBtnsAndKeys(e){
     
-    clearOperatorActiveStates();
+    let isNum = false;
     let value = "";
+
     if(e.type === "click"){
+        if(value !== "="){
+            isNum = true;
+        }
+        clearOperatorActiveStates();
         value = e.target.textContent;
     }else if(e.type === "keydown"){
-        
+        clearOperatorActiveStates();
         numberBtns.forEach(btn => {
             if(btn.textContent === e.key){
+                isNum = true;
                 btn.classList.add("selected");
                 setTimeout(()=>{
                     btn.classList.remove("selected");
                 }, 100)
-                value = e.key;
+                value = btn.textContent;
+                console.log("value")
             }
         })
 
     }
-
-    if(value !== "="){
-        console.log(value);
+    
+    if(isNum || value === "."){
+        console.log("isnum or value is . is true");
         if(value === "." && !screenOutput.textContent.includes(".")){
+            isNum = false;
             if(num2){
                 num2 += value;
                 screenOutput.textContent = num2;
@@ -151,14 +159,15 @@ function handleNumberBtnsAndKeys(e){
                 screenOutput.textContent = num1;
             }
         }
-        else if(equalBtnPressed){
+        else if(equalBtnPressed && !operator && isNum && value !== "="){
+            isNum = false;
             console.log("works");
             clearAll();
             num1 += value;
             screenOutput.textContent = num1;
         }
         else if(value !== "=" && value !== "." && !equalBtnPressed){
-
+            isNum = false;
             if(num1 && operator){
                 num2 += value;
                 screenOutput.textContent = num2; 
@@ -166,6 +175,7 @@ function handleNumberBtnsAndKeys(e){
             }else if(!operator && !num2){
                 num1 += value;
                 screenOutput.textContent = num1;
+                console.log(num1);
             }
         }
     }
@@ -174,8 +184,16 @@ function handleNumberBtnsAndKeys(e){
 
 function handleBackSpace(){
     if(!equalBtnPressed){
-        num1 = num1.slice(0, -1);
-        screenOutput.textContent = num1;
+        if(!operator && !num2){
+            num1 = String(num1).slice(0, -1);
+            screenOutput.textContent = num1;
+            console.log(num1 + "num1 clickbackspcae");
+        }
+        if(num1 && operator){
+            num2 = String(num2).slice(0, -1);
+            screenOutput.textContent = num2;
+            console.log(num2 + "clickbackspace")
+        }
     }
 }
 
@@ -210,12 +228,23 @@ backSpace.addEventListener("click", handleBackSpace)
 function handleBackSpaceEvent(e){
     if(!equalBtnPressed){
         if(e.key === "Backspace"){
+            console.log("backspace event fired")
             backSpace.classList.add("selected");
             setTimeout(()=>{
                 backSpace.classList.remove("selected");
             }, 100)
-            num1 = num1.slice(0, -1);
-            screenOutput.textContent = num1;
+
+            if(!operator && !num2){
+                num1 = String(num1).slice(0, -1);
+                screenOutput.textContent = num1;
+                console.log(num1 + "num1 clickbackspcae");
+            }
+            if(num1 && operator){
+                num2 = String(num2).slice(0, -1);
+                screenOutput.textContent = num2;
+                console.log(num2 + "clickbackspace");
+            }
+
         }      
     }
 }
