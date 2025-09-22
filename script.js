@@ -70,6 +70,7 @@ function displayResult(){
 function handleOperatorBtnsAndKeys(e){
     
     if(e.type === "click"){
+
             equalBtnPressed = false;
             if(num1 && num2 && operator){
                 num1 = operate(num1, operator, num2);
@@ -77,7 +78,10 @@ function handleOperatorBtnsAndKeys(e){
                 num2 = "";
                 operator = "";
             }
-            
+
+            clearOperatorActiveStates();
+
+
             if(num1){
                 operator = "";
                 operator = e.target.textContent;
@@ -97,11 +101,14 @@ function handleOperatorBtnsAndKeys(e){
                     operator = "";
                 }
 
-                if(num1 && !operator){
+                clearOperatorActiveStates();
+
+                if(num1){
                     operator = "";
                     operator = btn.textContent;
                     btn.classList.add("selected");
                 }
+
 
             }else if(e.key === "Enter"){
                 equalBtn.classList.add("selected");
