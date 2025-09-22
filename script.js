@@ -88,8 +88,6 @@ function handleOperatorBtnsAndKeys(e){
     if(e.type === "keydown"){
         operatorBtns.forEach(btn => {
 
-            console.log(e.key)
-
             if(e.key === btn.textContent){
                 equalBtnPressed = false;
                 if(num1 && num2 && operator){
@@ -97,14 +95,12 @@ function handleOperatorBtnsAndKeys(e){
                     screenOutput.textContent = Math.round(Number(num1) * 100000000) / 100000000;
                     num2 = "";
                     operator = "";
-                    console.log("operated")
                 }
 
                 if(num1 && !operator){
                     operator = "";
                     operator = btn.textContent;
                     btn.classList.add("selected");
-                    console.log("operator added");
                 }
 
             }else if(e.key === "Enter"){
@@ -113,7 +109,6 @@ function handleOperatorBtnsAndKeys(e){
                     equalBtn.classList.remove("selected");
                 }, 100)
                 displayResult();
-                console.log("displayResult called")
             }
         })
     }
@@ -141,7 +136,6 @@ function handleNumberBtnsAndKeys(e){
                     btn.classList.remove("selected");
                 }, 100)
                 value = btn.textContent;
-                console.log("value")
             }
         })
 
@@ -161,7 +155,6 @@ function handleNumberBtnsAndKeys(e){
         }
         else if(equalBtnPressed && !operator && isNum && value !== "="){
             isNum = false;
-            console.log("works");
             clearAll();
             num1 += value;
             screenOutput.textContent = num1;
@@ -171,11 +164,9 @@ function handleNumberBtnsAndKeys(e){
             if(num1 && operator){
                 num2 += value;
                 screenOutput.textContent = num2; 
-                console.log("num2 pressed"); 
             }else if(!operator && !num2){
                 num1 += value;
                 screenOutput.textContent = num1;
-                console.log(num1);
             }
         }
     }
@@ -187,12 +178,10 @@ function handleBackSpace(){
         if(!operator && !num2){
             num1 = String(num1).slice(0, -1);
             screenOutput.textContent = num1;
-            console.log(num1 + "num1 clickbackspcae");
         }
         if(num1 && operator){
             num2 = String(num2).slice(0, -1);
             screenOutput.textContent = num2;
-            console.log(num2 + "clickbackspace")
         }
     }
 }
@@ -237,12 +226,10 @@ function handleBackSpaceEvent(e){
             if(!operator && !num2){
                 num1 = String(num1).slice(0, -1);
                 screenOutput.textContent = num1;
-                console.log(num1 + "num1 clickbackspcae");
             }
             if(num1 && operator){
                 num2 = String(num2).slice(0, -1);
                 screenOutput.textContent = num2;
-                console.log(num2 + "clickbackspace");
             }
 
         }      
